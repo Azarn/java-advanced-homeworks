@@ -47,6 +47,14 @@ public class WebCrawler implements Crawler {
     private Set<String> urls;
     private Map<String, IOException> errors;
 
+    /**
+     * Creates a new instance of WebCrawler
+     *
+     * @param downloader {@link Downloader} to use for downloading pages
+     * @param downloaders Maximum number of parallel downloads
+     * @param extractors Maximum number of parallel extraction
+     * @param perHost Maximum number of parallel downloads per host
+     */
     public WebCrawler(Downloader downloader, int downloaders, int extractors, int perHost) {
         this.downloader = downloader;
         maxPerHost = perHost;
@@ -55,6 +63,12 @@ public class WebCrawler implements Crawler {
         extractorsPool = new PhaserThreadPoolExecutor(phaser, extractors);
     }
 
+    /**
+     * Specific private function to download url and recursively download all its links while depth > 1
+     *
+     * @param url Specifies resource to download
+     * @param currentDepth Stores the current depth of crawling
+     */
     @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     private void downloadPart(String url, int currentDepth) {
         if (!urls.add(url)) {

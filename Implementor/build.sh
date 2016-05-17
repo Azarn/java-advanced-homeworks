@@ -31,7 +31,7 @@ case $1 in
         javadoc -author -link https://docs.oracle.com/javase/8/docs/api/ -private -sourcepath "src" -classpath $ARTIFACTS -d javadoc $PACKAGE ../../java-advanced-2016/java/info/kgeorgiy/java/advanced/$TESTER_PACKAGE_NAME/*.java $2
         ;;
     jar )
-        jar -cvfm $BUILDDIR/$OURJAR META-INF/MANIFEST.MF  -C $BUILDDIR ./
+        jar -cvfm $BUILDDIR/$OURJAR META-INF/MANIFEST.MF  -C $BUILDDIR ./ru
         ;;
     run )
         java -cp "$ARTIFACTS:$BUILDDIR" $TESTER_PACKAGE.$TESTER_CLASS $2 $OURCLASS "$3"

@@ -23,10 +23,24 @@ import javax.tools.ToolProvider;
 
 
 public class Implementor implements JarImpler {
+    /**
+     * A map to get default value from class
+     */
     private static final Map<Class, Object> DEFAULT_VALUES;
+
+    /**
+     * Saving default line separator
+     */
     private static final String LS = System.lineSeparator();
+
+    /**
+     * Setting tabulation to 4 spaces, using for better code look
+     */
     private static final String SP = "    ";
 
+    /**
+     * Creating our class->object map
+     */
     static {
         Map<Class, Object> sMap = new HashMap<Class, Object>();
         sMap.put(boolean.class, false);
@@ -41,9 +55,24 @@ public class Implementor implements JarImpler {
         DEFAULT_VALUES = Collections.unmodifiableMap(sMap);
     }
 
+    /**
+     * Stores only unique methods
+     */
     private HashMap<String, Method> methods;
+
+    /**
+     * String buffer to store generated class files
+     *
+     * @see StringBuilder
+     */
     private StringBuilder outSB;
 
+    /**
+     * Generates hash, unifying by method's name and params
+     *
+     * @param method to calculate hash from
+     * @return hash of method
+     */
     private static String calcMethodHash(Method method) {
         StringBuilder paramsBuilder = new StringBuilder();
         for (Class<?> c: method.getParameterTypes()) {
@@ -53,6 +82,12 @@ public class Implementor implements JarImpler {
         return method.getName() + paramsBuilder.toString();
     }
 
+    /**
+     * Recursively loads all abstract methods from class and its superclasses or interfaces
+     *
+     * @param clazz specifies class to load from
+     * @param iterateInterfaces defines if it should look for interfaces or superclasses in scpecified class
+     */
     private void loadAbstractMethods(Class<?> clazz, boolean iterateInterfaces) {
         for (Method method: clazz.getDeclaredMethods()) {
             int mods = method.getModifiers();
@@ -76,6 +111,12 @@ public class Implementor implements JarImpler {
         }
     }
 
+    /**
+     * Generates code implementing given executable (constructor or function) and appends it to global string buffer
+     *
+     * @param ex executable to implement
+     * @param className it is needed if we are implemeting constructor
+     */
     private void implementExecutable(Executable ex, String className) {
         int modifiers = ex.getModifiers() & ~(Modifier.ABSTRACT | Modifier.TRANSIENT | Modifier.NATIVE);
         boolean isVarArgs = ex.isVarArgs();
@@ -145,6 +186,13 @@ public class Implementor implements JarImpler {
         outSB.append(";").append(LS).append(SP).append("}").append(LS);
     }
 
+    /**
+     * Generates code implemeting given class or interface, specified by token
+     *
+     * @param token specifies class or interface for code generation
+     * @param root root directory
+     * @throws ImplerException thrown when implementation cannot be generated (e.g. if class is final)
+     */
 	public void implement(Class<?> token, Path root) throws ImplerException {
         methods = new HashMap<>();
         outSB = new StringBuilder();
@@ -210,6 +258,14 @@ public class Implementor implements JarImpler {
         }
     }
 
+    /**
+     * Special inner function that used to add class/interface package to the path if it has one
+     *
+     * @param root starting path
+     * @param token class/interface to get package from
+     * @param separator specifies file separator to use when concatinating paths
+     * @return new generated path, including class's package
+     */
     public static Path getDirPath(Path root, Class<?> token, String separator) {
         Package pkg = token.getPackage();
         if (pkg != null) {
@@ -218,6 +274,14 @@ public class Implementor implements JarImpler {
         return root;
     }
 
+    /**
+     * Generates code, implementating given class or interface and puts it in a jar file
+     * Generated jar file name will be full class name with a suffix "Impl"
+     *
+     * @param token specifies class or interface for code generation
+     * @param jarFile root path for storing jar file
+     * @throws ImplerException thrown if implementation cannot be generated or jar file could not be created
+     */
     public void implementJar(Class<?> token, Path jarFile) throws ImplerException {
         Path dir;
         try {
@@ -249,6 +313,13 @@ public class Implementor implements JarImpler {
         }
     }
 
+    /**
+     * Main method so that implementor could be ran from console
+     *
+     * @param args expecting: [token] [path]
+     * @throws ClassNotFoundException thrown when specified class could not be found
+     * @throws ImplerException thrown when specified class could not be implemented
+     */
     public static void main(String args[]) throws ClassNotFoundException, ImplerException {
         if (args.length != 2) {
             throw new IllegalArgumentException("Usage Implementor.jar <token> <path>");

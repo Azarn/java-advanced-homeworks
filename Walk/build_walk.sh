@@ -1,10 +1,10 @@
 #!/bin/sh
 
-MY_CLASS_NAME="Implementor"
-MY_PACKAGE_NAME="implementor"
+MY_CLASS_NAME="Walk"
+MY_PACKAGE_NAME="walk"
 TESTER_CLASS="Tester"
-TESTER_JAR="ImplementorTest"
-TESTER_PACKAGE_NAME="implementor"
+TESTER_JAR="WalkTest"
+TESTER_PACKAGE_NAME="walk"
 
 PACKAGE_PREFIX="ru.ifmo.ctddev.kichigin"
 BUILDDIR="./out"

@@ -1,10 +1,10 @@
 #!/bin/sh
 
-MY_CLASS_NAME="Implementor"
-MY_PACKAGE_NAME="implementor"
+MY_CLASS_NAME="HelloUDPClient"
+MY_PACKAGE_NAME="helloudp"
 TESTER_CLASS="Tester"
-TESTER_JAR="ImplementorTest"
-TESTER_PACKAGE_NAME="implementor"
+TESTER_JAR="HelloUDPTest"
+TESTER_PACKAGE_NAME="hello"
 
 PACKAGE_PREFIX="ru.ifmo.ctddev.kichigin"
 BUILDDIR="./out"

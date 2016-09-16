@@ -39,6 +39,9 @@ case $1 in
     run-jar )
         java -cp "$ARTIFACTS:$BUILDDIR" -jar $BUILDDIR/$OURJAR "$2" "$3" "$4" "$5"
         ;;
+    run-main )
+        java -cp "$ARTIFACTS:$BUILDDIR" $OURCLASS "$2"
+        ;;
     clean )
 	rm -rf $BUILDDIR
         rm -rf ./javadoc

@@ -64,7 +64,7 @@ public class WebCrawler implements Crawler {
     }
 
     /**
-     * Specific private function to download url and recursively download all its links while depth > 1
+     * Specific private function to download url and recursively download all its links while depth is greater than 1
      *
      * @param url Specifies resource to download
      * @param currentDepth Stores the current depth of crawling

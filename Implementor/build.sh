@@ -37,7 +37,10 @@ case $1 in
         java -cp "$ARTIFACTS:$BUILDDIR" $TESTER_PACKAGE.$TESTER_CLASS $2 $OURCLASS "$3"
         ;;
     run-jar )
-        java -cp "$ARTIFACTS:$BUILDDIR" -jar $BUILDDIR/$OURJAR "$2" "$3" "$4" "$5"
+        java -cp "$ARTIFACTS:$BUILDDIR" $OURCLASS "$2"	#-jar $BUILDDIR/$OURJAR "$2" "$3" "$4" "$5"
+        ;;
+    run-main )
+        java -cp "$ARTIFACTS:$BUILDDIR" $OURCLASS "$2"
         ;;
     clean )
 	rm -rf $BUILDDIR
@@ -45,7 +48,7 @@ case $1 in
         rm -rf ./META-INF
         ;;
     *)
-        echo "Usage: build.sh manifest | clean | compile | doc | jar | run-jar | run"
+        echo "Usage: build.sh manifest | clean | compile | doc | jar | run-jar | run | run-main"
         ;;
 esac
 
